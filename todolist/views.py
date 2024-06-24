@@ -10,8 +10,6 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
-
-
 class TodoItemView(APIView):
 
     authentication_classes = [TokenAuthentication]
@@ -19,15 +17,9 @@ class TodoItemView(APIView):
 
     def get(self, request, format=None):
 
-        todos = TodoItem.objects.all()
+        todos = TodoItem.objects.filter(author=request.user)
         serializer = TodoItemSerializer(todos, many=True)
         return Response(serializer.data)
-
-
-
-
-
-
 
 class Loginview(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
